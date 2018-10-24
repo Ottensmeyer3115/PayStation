@@ -1,0 +1,120 @@
+<!-- Build file for the Pay Station case study
+
+   This source code is from the book 
+     "Flexible, Reliable Software:
+       Using Patterns and Agile Development"
+     published by CRC Press.
+   Author: 
+     Henrik B Christensen 
+     Department of Computer Science
+     Aarhus University
+   
+   Please visit http://www.baerbak.com/ for further information.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+<project name="PayStation" default="help" basedir=".">
+    
+  <property name="source-directory" value="src"/>
+  <property name="test-source-directory" value="test"/>
+  <property name="build-directory" value="build"/>
+  <property name="javadoc-directory" value="javadoc"/>
+
+  <property name="junit-jar" value="lib/junit-4.4.jar"/>
+
+  <path id="class-path">
+    <pathelement location="${build-directory}"/>
+    <pathelement location="${junit-jar}"/>
+  </path>
+
+  <target name="help">
+    <echo>
+Pay station build management.
+  Targets:
+    build-src:     Builds production code.
+    test:          JUnit test production code.
+    clean:         Removes all bytecode.
+    javadoc:       Generate JavaDoc.
+
+   This source code is from the book 
+     "Flexible, Reliable Software:
+       Using Patterns and Agile Development"
+     published by CRC Press.
+   Author: 
+     Henrik B Christensen 
+     Department of Computer Science
+     Aarhus University
+   
+   Please visit http://www.baerbak.com/ for further information.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+ 
+       http://www.apache.org/licenses/LICENSE-2.0
+ 
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+    </echo>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build-directory}"/>
+    <delete dir="${javadoc-directory}"/>
+  </target>
+
+  <target name="prepare">
+    <mkdir dir="${build-directory}"/>
+    <mkdir dir="${javadoc-directory}"/>
+  </target>
+
+  <target name="build-src" depends="prepare">
+    <javac srcdir="${source-directory}"
+      destdir="${build-directory}">
+      <classpath refid="class-path"/>
+    </javac>
+  </target>
+
+  <target name="build-test" depends="build-src">
+    <javac srcdir="${test-source-directory}"
+      destdir="${build-directory}">
+      <classpath refid="class-path"/>
+    </javac>
+  </target>
+
+  <target name="build-all" depends="build-src,build-test"/>
+  
+  <target name="test"  depends="build-all">
+    <java classname="org.junit.runner.JUnitCore">
+      <arg value="paystation.domain.TestAll"/>
+      <classpath refid="class-path"/>
+    </java>
+  </target>
+
+  <target name="javadoc" depends="prepare">
+    <javadoc
+      packagenames="paystation.*"
+      destdir="${javadoc-directory}"
+      sourcepath="${source-directory}"
+      windowtitle="Pay station system">
+      
+      <classpath refid="class-path"/>
+    </javadoc>
+  </target>
+  
+</project>
